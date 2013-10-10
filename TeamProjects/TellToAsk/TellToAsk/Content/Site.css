@@ -1,0 +1,59 @@
+﻿body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+ }
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/* styles for removing the background from form */
+.no-color {
+  background-color: white;
+  border-style:none;
+}
+
+.break-word {
+    word-wrap: break-word;
+    overflow:hidden;
+    width: 100% 
+}
+
+.width100Pro {
+    width: 100%
+}
+
+.inline-block-el {
+    display:inline-block;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.footer-main {
+
+    color: #999999;
+    background-color:#1C1C1C
+}

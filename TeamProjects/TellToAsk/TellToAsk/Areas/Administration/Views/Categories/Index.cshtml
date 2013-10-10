@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TellToAsk.Areas.Administration.Models.CategoryModel>
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+<h2>Categories</h2>
+
+@(Html.Kendo().Grid<TellToAsk.Areas.Administration.Models.CategoryModel>()
+    .Name("Categories")
+    .Columns(column =>
+        {
+           // column.Bound(p => p.CategoryId);
+            column.Bound(p => p.Name);
+            column.Bound(p => p.AgeRating).Width(100);
+            column.Template(p => @Html.Action("Edit", "Categories", new { id = p.CategoryId }))
+                .ClientTemplate(
+                "<a class='btn btn-primary' href='/Administration/Categories/Edit?id=#= CategoryId #'>Edit</a>  |  " +
+                "<a class='btn btn-primary' href='/Administration/Categories/Delete?id=#= CategoryId #'>Delete</a>")
+                .Title("Action").Width(150);
+        })
+     .Pageable()
+     .Sortable()
+     .Selectable()
+     .DataSource(data => data
+         .Ajax()
+         .ServerOperation(true)
+         .PageSize(5)
+         .Events(events => events.Error("error_handler"))
+         .Model(model =>
+         {
+             model.Id(p => p.CategoryId);
+         })
+         .Read(read => read.Action("Read", "Categories")))
+         )
+
+<div>
+    <br/>
+    @Html.ActionLink("Create New", "Create", new { area = "Administration" }, new { @class = "btn btn-primary" })
+</div>
+
+<script>
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/kendo")
+}
+        

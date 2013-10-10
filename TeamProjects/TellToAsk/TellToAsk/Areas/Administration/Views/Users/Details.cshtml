@@ -1,0 +1,85 @@
+﻿@model TellToAsk.Areas.Administration.Models.UserDetailsModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>User Details</legend>
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Points)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Points)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Questions)
+        </dt>
+        @if (Model.Questions.Count() > 0)
+        {
+            <dd>
+                <ul>
+                    @foreach (var question in Model.Questions)
+                    {
+                        <li class=".break-word">
+                            @Html.ActionLink(@question.Title, "Edit", "Questions", new { id = @question.QuestionId }, null) -
+                            <span style="color:red">@question.Approved</span>
+                        </li>
+                    }
+                </ul>
+            </dd>
+        }
+        @if (Model.Answers.Count() > 0)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Answers)
+            </dt>
+
+            <dd>
+                <ul>
+                    @foreach (var answer in Model.Answers)
+                    {
+                        <li class="break-word">
+                            @Html.ActionLink(@answer.Text, "Edit", "Answers", new { id = @answer.Id }, null)
+                            <span style="color:red">@answer.Reported</span>
+                        </li>
+                    }
+                </ul>
+            </dd>
+        }
+    </dl>
+
+</fieldset>
+<div class="form-actions">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.UserId }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+</div>
+

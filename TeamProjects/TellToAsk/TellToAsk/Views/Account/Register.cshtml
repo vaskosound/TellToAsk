@@ -1,0 +1,102 @@
+@model TellToAsk.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    IEnumerable<SelectListItem> genderList = (IEnumerable<SelectListItem>) ViewData["genders"];
+    var selectedCats = (List<TellToAsk.Areas.LoggedUser.Models.CategoryModel>)ViewBag.catselected;
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    
+    <fieldset class="form-horizontal">
+        <legend>Create a new account.</legend>
+        <div class="control-group">
+            @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.UserName)
+            </div>   
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+            <div class="controls">
+                @Html.PasswordFor(m => m.Password)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.PasswordFor(m => m.ConfirmPassword)
+                    </div>
+                </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Gender, new { @class = "control-label" })
+            <div class="controls">
+                @(Html.DropDownListFor(g => g.Gender, (IEnumerable<SelectListItem>)ViewData["genders"]))
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.BirthDate, new { @class = "control-label" })
+                <div class="controls">
+                   @(Html.Kendo().Calendar().Name("birthDate")
+                   .Min(new DateTime(1901, 01, 01))
+                   .Max(new DateTime(2007, 12, 31))
+                   .Events(e => e.Change("change"))
+                   )                   
+                   @Html.TextBoxFor(m => m.BirthDate, new { @class = "hidden", @Id="birth-date" })
+                 </div>
+       </div>
+        <div class="control-group">
+            <div class="controls">
+                <p> For successful registration you need to select  at least 3 categories that suit your age! </p>
+                <p id="error-holder" style="color:red;"><em> @ViewBag.error </em></p>
+                    </div>
+        </div>
+    <div class="control-group">
+        <label class="control-label">Categories</label>
+        <div class="controls">
+            @(Html.Kendo().MultiSelect()
+                      .Name("categories")
+                      .DataTextField("Name")
+                    .DataValueField("CategoryId")
+                      .Placeholder("Select categories...")
+                  .AutoBind(false)
+                      .DataSource(source =>
+                      {
+                          source.Read(read =>
+                          {
+                              read.Action("GetCategories", "Base");
+                          })
+                          .ServerFiltering(true);
+                      })
+                 
+            )
+
+        </div>
+    </div>
+    <div class="form-actions no-color">
+        <input type="submit" value="Register" class="btn" />
+    </div>
+</fieldset>
+}
+
+    <script>
+        function change() {
+            $("#birth-date").val(kendo.toString(this.value(), 'yyyy-MM-dd'));
+        }
+
+        function navigate() {
+            // console.log("Navigate");
+        }
+    </script>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/kendo")
+        @Scripts.Render("~/bundles/jqueryval")
+
+    }

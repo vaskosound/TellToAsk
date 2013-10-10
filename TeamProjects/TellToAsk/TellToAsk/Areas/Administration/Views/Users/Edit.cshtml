@@ -1,0 +1,96 @@
+﻿@model TellToAsk.Model.ApplicationUser
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit User</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset class="form-horizontal">
+        <legend>@Model.UserName</legend>
+        @Html.HiddenFor(model => model.UserName)
+        @Html.HiddenFor(model => model.BirthDate)
+        @Html.HiddenFor(model => model.Gender)
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Points, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.Points)
+                @Html.ValidationMessageFor(model => model.Points, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Roles, new { @class = "control-label" })
+            <div class="controls">
+                <div id="roles-list">
+                    @Html.Partial("_Roles")
+                </div>
+                @Ajax.ActionLink("Add Roles", "EditRoles", "Users", new { id = Model.Id }, new AjaxOptions()
+                {
+                    HttpMethod = "GET",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "edit-roles"
+                }, new { @class = "btn btn btn-primary" })
+                @if (!Model.Management.DisableSignIn)
+                {
+                    @Ajax.ActionLink("Ban User", "BanUser", new { id = Model.Id }, new AjaxOptions()
+                    {
+                        HttpMethod = "GET",
+                        OnComplete = "hideBanButton"
+                    }, new { @class = "btn btn btn-primary ban-user" })
+                    @Ajax.ActionLink("Unban User", "UnbanUser", new { id = Model.Id }, new AjaxOptions()
+                    {
+                        HttpMethod = "GET",
+                        OnComplete = "hideUnbanButton"
+                    }, new { @class = "btn btn btn-primary unban-user begin-hiden" })
+                }
+                else
+                {
+                    @Ajax.ActionLink("Unban User", "UnbanUser", new { id = Model.Id }, new AjaxOptions()
+                    {
+                        HttpMethod = "GET",
+                        OnComplete = "hideUnbanButton"
+                    }, new { @class = "btn btn btn-primary unban-user" })
+                    @Ajax.ActionLink("Ban User", "BanUser", new { id = Model.Id }, new AjaxOptions()
+                    {
+                        HttpMethod = "GET",
+                        OnComplete = "hideBanButton"
+                    }, new { @class = "btn btn btn-primary ban-user begin-hiden" })
+                }
+            </div>
+        </div>
+        <div class="form-actions">
+            <input type="submit" value="Save" class="btn btn btn-primary" />
+        </div>
+    </fieldset>
+}
+
+<div id="edit-roles"></div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $(".begin-hiden").hide()
+    function hideBanButton() {
+        $(".ban-user").hide();
+        $(".unban-user").show();
+    }
+
+    function hideUnbanButton() {
+        $(".unban-user").hide();
+        $(".ban-user").show();
+    }
+</script>

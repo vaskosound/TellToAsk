@@ -1,0 +1,204 @@
+﻿@model TellToAsk.Areas.LoggedUser.Models.AnswerModel
+
+@{
+    ViewBag.Title = "Take question";
+}
+
+<legend>@ViewBag.Title</legend>
+<em>For every answer you will get 10 points.
+For every answer thats is evaluated as 'useful you will get 5 more. For every answer evaluated as useless you will lose 5 points.'    
+</em>
+@(Html.Kendo().Grid<TellToAsk.Areas.LoggedUser.Models.TakeQuestionModel>()
+    .Name("Grid")
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.QuestionId).Visible(false);
+        columns.Bound(p => p.QuestionTitle).Title("Question").ClientTemplate(
+        "#: QuestionTitle.length > 100 ? (QuestionTitle.substring(0, 100).concat('...')) : QuestionTitle #").Sortable(false);
+        columns.Bound(p => p.CategoryName).Title("Category").Width("400px");
+        columns.Bound(p => p.DateAsked).Title("Asked on").Width("400px");
+
+    })
+    .Pageable()
+    .Sortable()
+    .Selectable()
+    .Filterable()
+        .Scrollable(c => c.Height("500px"))
+     .Events(ev =>
+        {
+            ev.Change("showDetails");
+        })
+          .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(5)
+        .Read(read => read.Action("GetTargetedQuestions", "LoggedUser")))
+     )
+        
+
+@*TO DO multiple kendo windows*@
+@(Html.Kendo().Window().Name("Details")
+    .Title("Answer Question")
+    .Visible(false)
+    .Modal(false)
+    .Draggable(true)
+    .Pinned(true)
+        .Animation(animation =>
+            {
+                animation.Open(open =>
+                {
+                    open.Expand(ExpandDirection.Vertical);
+                   
+                    open.Zoom(ZoomDirection.In);
+                   
+                    open.Fade(FadeDirection.In);
+                    
+                });
+
+                animation.Close(close =>
+                {
+                    close.Reverse(true);
+
+                    close.Expand(ExpandDirection.Vertical);
+
+                    close.Zoom(ZoomDirection.Out);
+                    
+                    close.Reverse(false);
+
+                    close.Fade(FadeDirection.In);
+
+                });
+            })
+    .Resizable()
+    .Width(1200)
+    .Height(450)
+    .Events(ev => ev.Activate("maximizeWindowOnLoad"))
+        .Actions(actions => actions.Maximize())                
+)
+
+<script type="text/x-kendo-template" id="template">
+
+    <div id="details-container">
+        
+
+        @using (Html.BeginForm("AnswerToQuestion", "LoggedUser"))
+        {
+             @Html.AntiForgeryToken()
+          <div class="control-group">
+              <strong class="break-word">#: QuestionTitle #</strong>
+
+            <div class="controls">
+                <div class="row-fluid">
+                    <div class="span10">
+                        @*on change of the name of text area the id will be changed -> chak where js uses it*@
+                        @Html.TextAreaFor(model => model.Comment, new { @class = "width100Pro", @rows = 10 })
+                                </div>
+                            <div class="span2 text-center">
+                                <button type="button" id="cancel-answer" class="btn width100Pro">Cancel</button>
+
+                                <br />
+                                <br />
+                                <br />
+
+                                <button type="submit" class="btn btn-success width100Pro">Answer</button>
+                            </div>
+                    </div>
+                
+
+                @if (Model.QuestionId == 0)
+                {
+                <input type="hidden" name="QuestionId" value="#= QuestionId #" />
+                }
+                else
+                {
+                <input type="hidden" name="QuestionId" value="@(Model.QuestionId)" />
+                }
+
+                @Html.ValidationMessageFor(model => model.Comment)
+            </div>
+        </div>
+            
+           
+        }
+
+        <em class="break-word">#: QuestionText #</em>
+    </div>
+</script>
+
+<script>
+    $( document ).ready(function() {
+
+        window.manageAnswerWindow = function manageAnswerWindow(questionModel) {
+       
+            var wnd = $("#Details").data("kendoWindow");
+            $("#question-text-popup").html(questionModel);
+            //wnd.title(questionModel.QuestionTitle);
+            
+           // .draggable();
+
+            if (!questionModel.QuestionText) {
+                questionModel.QuestionText = ""; 
+            }
+
+            wnd.content(detailsTemplate(questionModel));
+            wnd.center().open();
+
+            $("#cancel-answer").on("click", function () {
+                    closeKWin();
+                });
+        };
+
+        var val = @(Model.QuestionId);
+
+        if (val != 0) {
+            
+            $.getJSON("GetQuestionById", { id: val}, function(questionModel) {
+                window.manageAnswerWindow(questionModel);
+            }); 
+
+        }
+
+       var detailsTemplate = kendo.template($("#template").html());
+
+
+      
+    });
+
+    
+    function maximizeWindowOnLoad() {
+       $("#Details").data("kendoWindow");
+    }
+   
+    function showDetails(e) {
+        var grid = e.sender;
+        var currentDataItem = grid.dataItem(this.select()).QuestionId;
+       
+       
+        $.getJSON("GetQuestionById", { id: currentDataItem}, function(questionModel) {
+            window.manageAnswerWindow(questionModel);
+            $("#Comment").val("");
+        }); 
+
+       
+    }
+   
+    function closeKWin(e) {
+          
+        var wnd = $("#Details").data("kendoWindow");
+
+        $("#Comment").val("");
+
+        
+        wnd.close();
+      
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+@section Styles {
+    
+    @Styles.Render("~/Content/kendo-client-side")
+}

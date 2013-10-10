@@ -1,0 +1,72 @@
+﻿@model TellToAsk.Areas.Administration.Models.QuestionEditModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset class="form-horizontal">
+        <legend>Question</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Title, null, new { @class = "help-inline" })
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Content, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.Content)
+                @Html.ValidationMessageFor(model => model.Content, null, new { @class = "help-inline" })
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Category, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownList("Category", String.Empty)
+                @Html.ValidationMessageFor(model => model.Category, null, new { @class = "help-inline" })
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.IsApproved, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.IsApproved)
+                @Html.ValidationMessageFor(model => model.IsApproved, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.CreatorPoints, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.DisplayFor(model => model.CreatorPoints)
+                        </div>
+                    </div>
+
+        <div class="control-group">
+          
+                <div class="controls">
+                    @Html.ActionLink("User Details", "Details", "Users", new { id = Model.CreatorId }, null)
+                        </div>
+                    </div>
+
+        <div class="form-actions">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
