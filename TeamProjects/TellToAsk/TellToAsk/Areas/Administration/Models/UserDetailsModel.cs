@@ -21,7 +21,7 @@ namespace TellToAsk.Areas.Administration.Models
                     Gender = user.Gender == 0 ? "Male" : "Female",
                     Points = user.Points,
                     Roles = user.Roles.Select(x => x.Role.Name),
-                    Questions = user.MyQuestions.Select(q => new QuestionView() 
+                    Questions = user.MyQuestions.Select(q => new QuestionView()
                     {
                         QuestionId = q.QuestionId,
                         Title = q.Title,
@@ -32,6 +32,12 @@ namespace TellToAsk.Areas.Administration.Models
                         Id = a.AnswerId,
                         Text = a.Comment,
                         Reported = a.IsReported == false ? "" : "Reported"
+                    }),
+                    TargetedCategories = user.Categories.Select(c => new CategoryModel() 
+                    {
+                        CategoryId = c.CategoryId,
+                        Name = c.Name,
+                        AgeRating = c.AgeRating
                     })
                 };
             }
@@ -39,5 +45,7 @@ namespace TellToAsk.Areas.Administration.Models
         public IEnumerable<QuestionView> Questions { get; set; }
 
         public IEnumerable<AnswerView> Answers { get; set; }
+
+        public IEnumerable<CategoryModel> TargetedCategories { get; set; }
     }
 }

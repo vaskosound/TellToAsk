@@ -41,6 +41,22 @@
             @Html.DisplayFor(model => model.Points)
         </dd>
         <dt>
+            @Html.DisplayName("Targeted Categories")
+        </dt>
+        @if (Model.TargetedCategories.Count() > 0)
+        {
+            <dd>
+                <ul>
+                    @foreach (var category in Model.TargetedCategories)
+                    {
+                        <li class=".break-word">
+                            @category.Name
+                        </li>
+                    }
+                </ul>
+            </dd>
+        }
+        <dt>
             @Html.DisplayNameFor(model => model.Questions)
         </dt>
         @if (Model.Questions.Count() > 0)
