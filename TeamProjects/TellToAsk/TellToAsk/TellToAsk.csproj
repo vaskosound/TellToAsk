@@ -43,7 +43,7 @@
   <ItemGroup>
     <Reference Include="Kendo.Mvc, Version=2013.2.918.340, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>KendoMVC\Kendo.Mvc.dll</HintPath>
+      <HintPath>..\..\..\..\..\TeamProject\TellToAsk\packages\Kendo.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject">
@@ -258,7 +258,7 @@
     <Content Include="img\msg-read.png" />
     <Content Include="img\msg-unread.png" />
     <Content Include="img\msg-new-msg.png" />
-    <Content Include="KendoMVC\Kendo.Mvc.dll" />
+    <Content Include="KendoMvc\Kendo.Mvc.dll" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Administration\Views\web.config" />
@@ -351,6 +351,9 @@
       <Project>{62d606f3-f505-4d8d-8261-5e5525d51395}</Project>
       <Name>TellToAsk.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
