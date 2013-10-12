@@ -17,20 +17,20 @@ namespace TellToAsk
 
             // The Kendo JavaScript bundle
             bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
-                        "~/Scripts/KendoUI/jquery.min.js",
-                        "~/Scripts/KendoUI/kendo.all.min.js", // or kendo.all.min.js if you want to use Kendo UI Web and Kendo UI DataViz
-                        "~/Scripts/KendoUI/kendo.aspnetmvc.min.js"));
+                        "~/Scripts/Kendo/jquery.min.js",
+                        "~/Scripts/Kendo/kendo.all.min.js", // or kendo.all.min.js if you want to use Kendo UI Web and Kendo UI DataViz
+                        "~/Scripts/Kendo/kendo.aspnetmvc.min.js"));
 
             // The Kendo CSS bundle
-            bundles.Add(new StyleBundle("~/Content/kendo").Include(
-                        "~/Content/KendoUI/kendo.common.min.css",
-                        "~/Content/KendoUI/Themes/kendo.bootstrap.min.css"));
+            bundles.Add(new StyleBundle("~/Content/kendoUI").Include(
+                        "~/Content/Kendo/kendo.common.min.css",
+                        "~/Content/Kendo/Themes/kendo.bootstrap.min.css"));
 
 
             // The Kendo CSS bundle
-            bundles.Add(new StyleBundle("~/Content/kendo-client-side").Include(
-                        "~/Content/KendoUI/kendo.common.min.css",
-                        "~/Content/KendoUI/Themes/kendo.blueopal.min.css"));
+            bundles.Add(new StyleBundle("~/Content/kendoUI-client-side").Include(
+                        "~/Content/Kendo/kendo.common.min.css",
+                        "~/Content/Kendo/Themes/kendo.blueopal.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",
