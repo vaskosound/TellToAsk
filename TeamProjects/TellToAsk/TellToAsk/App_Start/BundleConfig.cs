@@ -29,8 +29,7 @@ namespace TellToAsk
 
 
             // The Kendo CSS bundle
-            bundles.Add(new StyleBundle("~/Content/kendoUI-client-side").Include(
-                        "~/Content/Kendo/kendo.common.min.css",
+            bundles.Add(new StyleBundle("~/Content/Kendo/Themes/kendo-client-side").Include(
                         "~/Content/Kendo/Themes/kendo.blueopal.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
