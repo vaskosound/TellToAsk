@@ -22,7 +22,7 @@ namespace TellToAsk
                         "~/Scripts/Kendo/kendo.aspnetmvc.min.js"));
 
             // The Kendo CSS bundle
-            bundles.Add(new StyleBundle("~/Content/kendo").Include(
+            bundles.Add(new StyleBundle("~/Content/kendoUI").Include(
                         "~/Content/Kendo/kendo.common.min.css",
                         "~/Content/Kendo/Themes/kendo.bootstrap.min.css"));
 
